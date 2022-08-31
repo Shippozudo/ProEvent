@@ -1,9 +1,67 @@
-<h1> Events component! </h1>
+<h2> Events</h2>
+<hr>
 
-
-
-<div *ngFor="let event of events">
-  <p> <b>Theme:</b> {{event.theme}}</p>
-  <p> <b>Local:</b> {{event.local}}</p>
-  <hr>
+<div  class="form-inline">
+  <div class="form-group mb-2">
+    <label class="mr-2">
+     <h4>Filter:</h4>
+    </label>
+    <input
+     type="text"
+     class="form-control mr-2"
+     placeholder="Search"
+     [(ngModel)]="listFilter"
+     >
+  </div>
 </div>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+
+    <tr>
+      <th>
+        <button class="btn btn-outline-light btn-sm"
+        (click)="showImage()">
+          {{!hideImage ? 'Show Image': 'Hide Image'}}
+        </button>
+      </th>
+      <th>#</th>
+      <th>Theme</th>
+      <th>Local</th>
+      <th>Date</th>
+      <th>Quantity</th>
+      <th>Lot</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="events && events.length">
+    <tr *ngFor="let event of filteredEvents">
+      <td>
+        <img [collapse]="hideImage"
+             [isAnimated]="true"
+          src="/assets/{{event.imageUrl}}"
+          [style.width.px]="widthImage"
+          [style.margin.px]="marginImage"
+          >
+      </td>
+      <td>{{event.count}}</td>
+      <td>{{event.theme}}</td>
+      <td>{{event.local}}</td>
+      <td>{{event.date}}</td>
+      <td>{{event.peopleAmount}}</td>
+      <td>{{event.lot}}</td>
+      <td>
+        <button type="button" class="btn btn-primary btn-sm mr-2">Edit</button>
+        <button type="button" class="btn btn-danger btn-sm">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="!events.length">
+    <tr>
+      <td colspan="8" class="text-center">
+        <h5>Events not found</h5>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+

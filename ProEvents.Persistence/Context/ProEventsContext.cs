@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProEventos.Domain;
 
-namespace ProEvents.Persistence
+namespace ProEvents.Persistence.Context
 {
     public class ProEventsContext : DbContext
     {
@@ -16,12 +16,21 @@ namespace ProEvents.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PanelistEvent>()
-                .HasKey(PE => new
+                .HasKey(pe => new
                 {
-                    PE.EventId,
-                    PE.PanelistId
+                    pe.EventId,
+                    pe.PanelistId
                 });
 
+            modelBuilder.Entity<Event>()
+                .HasMany(e => e.SocialMedia)
+                .WithOne(sm => sm.Event)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Panelist>()
+               .HasMany(p => p.SocialMedia)
+               .WithOne(sm => sm.Panelist)
+               .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

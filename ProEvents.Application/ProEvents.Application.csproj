@@ -6,8 +6,8 @@
 
 
 	<ItemGroup>
-		<ProjectReference Include="..\ProEvents.Domain\ProEvents.Domain.csproj"/>
-		<ProjectReference Include="..\ProEvents.Persistence\ProEvents.Persistence.csproj"/>
+		<ProjectReference Include="..\ProEvents.Domain\ProEvents.Domain.csproj" />
+		<ProjectReference Include="..\ProEvents.Persistence\ProEvents.Persistence.csproj" />
 	</ItemGroup>
 
 </Project>

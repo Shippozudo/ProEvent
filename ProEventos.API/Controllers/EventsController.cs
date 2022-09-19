@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProEventos.Domain;
-using ProEvents.Persistence;
+using ProEvents.Application.Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProEventos.API.Controllers
 {
@@ -12,43 +11,55 @@ namespace ProEventos.API.Controllers
     public class EventsController : ControllerBase
     {
 
-        private readonly ProEventsContext _context;
+        private readonly IEventService _repository;
 
-        public EventsController(ProEventsContext context)
+        public EventsController(IEventService repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
-        public IEnumerable<Event> Get()
+        public async Task<IActionResult> GetAll()
         {
-            return _context.Events;
+            var getAll = await _repository.GetAllEventsAsync();
+            return Ok(getAll);
         }
 
         [HttpGet("{id}")]
-        public Event GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            return _context.Events
-                .FirstOrDefault(e => e.Id == id);
+            var getEvent = await _repository.GetEventByIdAsync(id);
+            return Ok(getEvent);
+        }
+
+
+        [HttpGet("{theme}")]
+        public async Task<IActionResult> GetByTheme(string theme)
+        {
+            var getEvent = await _repository.GetAllEventsByThemeAsync(theme);
+            return Ok(getEvent);
         }
 
 
         [HttpPost]
-        public string Post()
+        public async Task<IActionResult> Post(Event entity)
         {
-            return "Post";
+            var addEntity = await _repository.AddEvent(entity);
+            return Ok(addEntity);
         }
 
-        [HttpPut]
-        public string Put()
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(Guid id, Event entity)
         {
-            return "Put";
+            var addEntity = await _repository.UpdateEvent(id, entity);
+            return Ok(addEntity);
         }
 
         [HttpDelete]
-        public string Delete()
+        public async Task<IActionResult> Delete(Guid id)
         {
-            return "Delete";
+            var deleteEntity = await _repository.DeleteEvent(id);
+            return Ok(deleteEntity);
         }
     }
 }
